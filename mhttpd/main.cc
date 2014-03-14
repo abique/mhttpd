@@ -10,7 +10,7 @@ uint16_t & PORT = *mimosa::options::addOption<uint16_t>("", "port", "the port to
 std::string & PATH = *mimosa::options::addOption<std::string>("", "path", "the data dir to expose", "/usr");
 std::string & CERT = *mimosa::options::addOption<std::string>("", "cert", "the certificate (cert.pem)", "");
 std::string & KEY = *mimosa::options::addOption<std::string>("", "key", "the key (key.pem)", "");
-uint64_t & TIMEOUT = *mimosa::options::addOption<uint64_t>("", "timeout", "the read & write timeout in ms", 5000);
+uint64_t & TIMEOUT = *mimosa::options::addOption<uint64_t>("", "timeout", "the read & write timeout in seconds", 0);
 
 int main(int argc, char **argv)
 {
@@ -24,8 +24,8 @@ int main(int argc, char **argv)
     logger->setHandler(dispatch);
 
     mimosa::http::Server::Ptr server(new mimosa::http::Server);
-    server->setReadTimeout(TIMEOUT * mimosa::millisecond);
-    server->setWriteTimeout(TIMEOUT * mimosa::millisecond);
+    server->setReadTimeout(TIMEOUT * mimosa::second);
+    server->setWriteTimeout(TIMEOUT * mimosa::second);
     server->setHandler(logger);
 
     if (!CERT.empty() && !KEY.empty())
