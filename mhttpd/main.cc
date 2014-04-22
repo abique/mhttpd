@@ -12,13 +12,21 @@ std::string & CERT = *mimosa::options::addOption<std::string>("", "cert", "the c
 std::string & KEY = *mimosa::options::addOption<std::string>("", "key", "the key (key.pem)", "");
 uint64_t & TIMEOUT = *mimosa::options::addOption<uint64_t>("", "timeout", "the read & write timeout in seconds", 0);
 
+bool & ENABLE_READDIR = *mimosa::options::addSwitch("", "enable-readdir", "enables directory listing");
+bool & ENABLE_PUT = *mimosa::options::addSwitch("", "enable-put", "enables put");
+bool & ENABLE_DELETE = *mimosa::options::addSwitch("", "enable-delete", "enables delete");
+
 int main(int argc, char **argv)
 {
   mimosa::init(argc, argv);
 
   {
     auto dispatch(new mimosa::http::DispatchHandler);
-    dispatch->registerHandler("/*", new mimosa::http::FsHandler(PATH, 0, true));
+    auto fs_handler = new mimosa::http::FsHandler(PATH, 0);
+    fs_handler->enableReaddir(ENABLE_READDIR);
+    fs_handler->enablePut(ENABLE_PUT);
+    fs_handler->enableDelete(ENABLE_DELETE);
+    dispatch->registerHandler("/*", fs_handler);
 
     auto logger(new mimosa::http::LogHandler);
     logger->setHandler(dispatch);
