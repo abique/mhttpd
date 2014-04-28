@@ -1,4 +1,5 @@
 #include <mimosa/init.hh>
+#include <mimosa/priviledge-drop.hh>
 #include <mimosa/log/log.hh>
 #include <mimosa/options/options.hh>
 #include <mimosa/http/server.hh>
@@ -19,6 +20,7 @@ bool & ENABLE_DELETE = *mimosa::options::addSwitch("", "enable-delete", "enables
 int main(int argc, char **argv)
 {
   mimosa::init(argc, argv);
+  mimosa::priviledgeDrop();
 
   {
     auto dispatch(new mimosa::http::DispatchHandler);
