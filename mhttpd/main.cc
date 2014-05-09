@@ -16,6 +16,7 @@ uint64_t & TIMEOUT = *mimosa::options::addOption<uint64_t>("", "timeout", "the r
 bool & ENABLE_READDIR = *mimosa::options::addSwitch("", "enable-readdir", "enables directory listing");
 bool & ENABLE_PUT = *mimosa::options::addSwitch("", "enable-put", "enables put");
 bool & ENABLE_DELETE = *mimosa::options::addSwitch("", "enable-delete", "enables delete");
+bool & ENABLE_XATTR = *mimosa::options::addSwitch("", "enable-xattr", "store/fetch content type in xattr");
 
 int main(int argc, char **argv)
 {
@@ -28,6 +29,7 @@ int main(int argc, char **argv)
     fs_handler->enableReaddir(ENABLE_READDIR);
     fs_handler->enablePut(ENABLE_PUT);
     fs_handler->enableDelete(ENABLE_DELETE);
+    fs_handler->enableXattr(ENABLE_XATTR);
     dispatch->registerHandler("/*", fs_handler);
 
     auto logger(new mimosa::http::LogHandler);
