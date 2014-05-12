@@ -26,6 +26,8 @@ int main(int argc, char **argv)
   {
     auto dispatch(new mimosa::http::DispatchHandler);
     auto fs_handler = new mimosa::http::FsHandler(PATH, 0);
+    fs_handler->enableHead(true);
+    fs_handler->enableGet(true);
     fs_handler->enableReaddir(ENABLE_READDIR);
     fs_handler->enablePut(ENABLE_PUT);
     fs_handler->enableDelete(ENABLE_DELETE);
