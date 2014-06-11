@@ -13,10 +13,13 @@ std::string & CERT = *mimosa::options::addOption<std::string>("", "cert", "the c
 std::string & KEY = *mimosa::options::addOption<std::string>("", "key", "the key (key.pem)", "");
 uint64_t & TIMEOUT = *mimosa::options::addOption<uint64_t>("", "timeout", "the read & write timeout in seconds", 0);
 
+bool & DISABLE_GET = *mimosa::options::addSwitch("", "disable-get", "disable get");
+bool & DISABLE_HEAD = *mimosa::options::addSwitch("", "disable-head", "disable head");
 bool & ENABLE_READDIR = *mimosa::options::addSwitch("", "enable-readdir", "enables directory listing");
 bool & ENABLE_PUT = *mimosa::options::addSwitch("", "enable-put", "enables put");
 bool & ENABLE_DELETE = *mimosa::options::addSwitch("", "enable-delete", "enables delete");
 bool & ENABLE_XATTR = *mimosa::options::addSwitch("", "enable-xattr", "store/fetch content type in xattr");
+bool & ENABLE_MKCOL = *mimosa::options::addSwitch("", "enable-mkcol", "enables mkcol");
 
 int main(int argc, char **argv)
 {
@@ -26,11 +29,12 @@ int main(int argc, char **argv)
   {
     auto dispatch(new mimosa::http::DispatchHandler);
     auto fs_handler = new mimosa::http::FsHandler(PATH, 0);
-    fs_handler->enableHead(true);
-    fs_handler->enableGet(true);
+    fs_handler->enableHead(!DISABLE_GET);
+    fs_handler->enableGet(!DISABLE_HEAD);
     fs_handler->enableReaddir(ENABLE_READDIR);
     fs_handler->enablePut(ENABLE_PUT);
     fs_handler->enableDelete(ENABLE_DELETE);
+    fs_handler->enableMkcol(ENABLE_MKCOL);
     fs_handler->enableXattr(ENABLE_XATTR);
     dispatch->registerHandler("/*", fs_handler);
 
