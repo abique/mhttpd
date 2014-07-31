@@ -20,6 +20,7 @@ bool & ENABLE_PUT = *mimosa::options::addSwitch("", "enable-put", "enables put")
 bool & ENABLE_DELETE = *mimosa::options::addSwitch("", "enable-delete", "enables delete");
 bool & ENABLE_XATTR = *mimosa::options::addSwitch("", "enable-xattr", "store/fetch content type in xattr");
 bool & ENABLE_MKCOL = *mimosa::options::addSwitch("", "enable-mkcol", "enables mkcol");
+bool & ENABLE_MOVE = *mimosa::options::addSwitch("", "enable-move", "enables move");
 
 int main(int argc, char **argv)
 {
@@ -36,6 +37,7 @@ int main(int argc, char **argv)
     fs_handler->enableDelete(ENABLE_DELETE);
     fs_handler->enableMkcol(ENABLE_MKCOL);
     fs_handler->enableXattr(ENABLE_XATTR);
+    fs_handler->enableMove(ENABLE_MOVE);
     dispatch->registerHandler("/*", fs_handler);
 
     auto logger(new mimosa::http::LogHandler);
